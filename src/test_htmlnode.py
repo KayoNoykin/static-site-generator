@@ -1,6 +1,7 @@
 import unittest
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
+#HTMLNode tests
 class TestHTMLNode(unittest.TestCase):
     def test_props_none(self):
         node = HTMLNode()
@@ -23,6 +24,7 @@ class TestHTMLNode(unittest.TestCase):
         expected = ' href="https://www.google.com" target="_blank"'
         self.assertEqual(test, expected)
         
+# LeadNode tests
 class TestLeafNode(unittest.TestCase):
     def test_leaf_to_html_p(self):
         node = LeafNode("p", "Hello, world!")
@@ -37,3 +39,20 @@ class TestLeafNode(unittest.TestCase):
         node = LeafNode("a", None)
         with self.assertRaises(ValueError):
             node.to_html()
+            
+#ParentNode tests (add more)
+class TestParentNode(unittest.TestCase):
+    def test_to_html_with_children(self):
+        child_node = LeafNode("span", "child")
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
+
+
+    def test_to_html_with_grandchildren(self):
+        grandchild_node = LeafNode("b", "grandchild")
+        child_node = ParentNode("span", [grandchild_node])
+        parent_node = ParentNode("div", [child_node])
+        self.assertEqual(
+            parent_node.to_html(),
+            "<div><span><b>grandchild</b></span></div>",
+        )
