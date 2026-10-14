@@ -22,7 +22,7 @@ class HTMLNode:
     
 class LeafNode(HTMLNode):
     def __init__(self, tag: str | None, value: str, props: dict = None):
-        super().__init__(tag, value, props=props)
+        super().__init__(tag=tag, value=value, props=props)
         
     def to_html(self):
         if not self.value:

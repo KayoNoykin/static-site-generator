@@ -56,3 +56,27 @@ class TestParentNode(unittest.TestCase):
             parent_node.to_html(),
             "<div><span><b>grandchild</b></span></div>",
         )
+    
+    def test_tag_error(self):
+        child_node = LeafNode("span", "child")
+        parent_node = ParentNode(None, [child_node])
+        with self.assertRaises(ValueError, msg="parent nodes require a tag"):
+            parent_node.to_html()
+        
+    def test_child_error(self):
+        parent_node = ParentNode("div", None)
+        with self.assertRaises(ValueError, msg="parent nodes require children"):
+            parent_node.to_html()
+            
+    def test_nested_child_error(self):
+        child_node = ParentNode("span", None)
+        parent_node = ParentNode("div", [child_node])
+        with self.assertRaises(ValueError, msg="parent nodes require children"):
+            parent_node.to_html()
+            
+    def test_nested_leaf_error(self):
+        grandchild_node = LeafNode("b", None)
+        child_node = ParentNode("span", [grandchild_node])
+        parent_node = ParentNode("div", [child_node])
+        with self.assertRaises(ValueError, msg="leaf nodes must have a value"):
+            parent_node.to_html()
