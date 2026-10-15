@@ -1,5 +1,5 @@
 import unittest
-from functions import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link
+from functions import *
 from textnode import TextNode, TextType
 
 class TestSplitFuncs(unittest.TestCase):
@@ -182,8 +182,7 @@ class TestSplitFuncs(unittest.TestCase):
             ],
             new_nodes
         )
-    
-#extract_markdown_(images/links) tests (add more)        
+           
 class TestExtractFuncs(unittest.TestCase):
     def test_extract_markdown_images(self):
         matches = extract_markdown_images(
@@ -208,3 +207,29 @@ class TestExtractFuncs(unittest.TestCase):
             "This is text with a [link](https://www.boot.dev) and a [second_link](https://www.youtube.com)"
         )
         self.assertListEqual([("link", "https://www.boot.dev"), ("second_link", "https://www.youtube.com")], matches)
+        
+class TestTextToNode(unittest.TestCase):
+    def test_1(self):
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        nodes = text_to_textnodes(text)
+        
+        self.assertListEqual(
+            [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" with an ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" word and a ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+            nodes
+        )
+        
+    def test_error(self):
+        text = "This is **text* with an _italic_ word and a `code block and an ![obi wan image]https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        with self.assertRaises(Exception, msg="invalid markdown syntax"):
+            text_to_textnodes(text)
