@@ -234,7 +234,7 @@ class TestTextToNode(unittest.TestCase):
         with self.assertRaises(Exception, msg="invalid markdown syntax"):
             text_to_textnodes(text)
             
-class TestMDToBlocks(unittest.TestCase):
+class TestBlocks(unittest.TestCase):
     def test_markdown_to_blocks(self):
         md = """
 This is **bolded** paragraph

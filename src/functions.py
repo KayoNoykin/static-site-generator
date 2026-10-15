@@ -1,4 +1,4 @@
-from textnode import TextNode, TextType
+from textnode import TextNode, TextType, BlockType
 import re
 
 def extract_markdown_images(text: str) -> list[tuple]:
@@ -80,3 +80,19 @@ def markdown_to_blocks(markdown: str) -> list[str]:
         blocks.remove("")
     stripped = list(map(str.strip, blocks))
     return stripped
+
+def block_to_block_type(block: str) -> BlockType:
+    if block.startswith(f"{'#' * i} " for i in range(1,6)):
+        return BlockType.HEADING
+    elif block.startswith("```\n") and block.endswith("```"):
+        return BlockType.CODE
+    else:
+        lines = block.split("\n")
+        if all(line.startswith(">") for line in lines):
+            return BlockType.QUOTE
+        elif all(line.startswith("- ") for line in lines):
+            return BlockType.UNORDERED_LIST
+        elif all(lines[i - 1].startswith(f"{i}. ") for i in range(1, len(lines))):
+            return BlockType.ORDERED_LIST
+        else:
+            return BlockType.PARAGRAPH
