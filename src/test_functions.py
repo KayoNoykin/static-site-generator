@@ -28,4 +28,11 @@ class TestSplitFunc(unittest.TestCase):
                         TextNode("this is ", TextType.TEXT), TextNode("also bold", TextType.BOLD), TextNode(" text", TextType.TEXT),
                         TextNode("this is _italic_ text", TextType.TEXT)]
             self.assertEqual(test, expected)
-        
+
+#extract_markdown_(images/links) tests (add more)        
+class TestExtractFuncs(unittest.TestCase):
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
