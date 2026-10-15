@@ -33,7 +33,7 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
             output.append(node)
         else:
             split = re.split(r"(!\[.*?\))", node.text)
-            if len(re.split(r"[!\[]|\]|\(|\)", node.text)) % 2 == 0:
+            if len(re.split(r"!\[|\[|\]|\(|\)", node.text)) % 2 == 0:
                 raise Exception("invalid markdown syntax")
             args: list[tuple] = extract_markdown_images(node.text)
             for i in range(0, len(split)):
@@ -52,8 +52,8 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
         elif " [" not in node.text:
             output.append(node)
         else:
-            split = re.split(r"(\[.*?\))", node.text)
-            if len(re.split(r"\[|\]|\(|\)", node.text)) % 2 == 0:
+            split = re.split(r"(?<!!)(\[.*?\))", node.text)
+            if len(re.split(r"!\[|\[|\]|\(|\)", node.text)) % 2 == 0:
                 raise Exception("invalid markdown syntax")
             args: list[tuple] = extract_markdown_links(node.text)
             for i in range(0, len(split)):
