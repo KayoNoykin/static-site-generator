@@ -73,3 +73,10 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     image = split_nodes_image(code)
     link = split_nodes_link(image)
     return link
+
+def markdown_to_blocks(markdown: str) -> list[str]:
+    blocks = markdown.split("\n\n")
+    while "" in blocks:
+        blocks.remove("")
+    stripped = list(map(str.strip, blocks))
+    return stripped
