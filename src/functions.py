@@ -82,7 +82,7 @@ def markdown_to_blocks(markdown: str) -> list[str]:
     return stripped
 
 def block_to_block_type(block: str) -> BlockType:
-    if block.startswith(f"{'#' * i} " for i in range(1,6)):
+    if any(block.startswith(f"{'#' * i} ") for i in range(1,7)):
         return BlockType.HEADING
     elif block.startswith("```\n") and block.endswith("```"):
         return BlockType.CODE

@@ -1,6 +1,6 @@
 import unittest
 from functions import *
-from textnode import TextNode, TextType
+from textnode import TextNode, TextType, BlockType
 
 class TestSplitFuncs(unittest.TestCase):
     def test_bold(self):
@@ -274,3 +274,33 @@ This is a paragraph of text. It has some **bold** and _italic_ words inside of i
                 "- This is the first list item in a list block\n- This is a list item\n- This is another list item"
             ]
         )
+        
+    def test_BlockType_HEADING(self):
+        block = "###### This is a heading block"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.HEADING)
+        
+    def test_BlockType_CODE(self):
+        block = "```\nThis is a code block```"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.CODE)
+    
+    def test_BlockType_QUOTE(self):
+        block = ">this is a quote\n> this is also a quote but with a space\n>this is a third quote"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.QUOTE)
+        
+    def test_BlockType_UNORDERED_LIST(self):
+        block = "- This is the first list item in a list block\n- This is a list item\n- This is another list item"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.UNORDERED_LIST)
+        
+    def test_BlockType_ORDERED_LIST(self):
+        block = "1. This is the first list item in a list block\n2. This is a list item\n3. This is another list item"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.ORDERED_LIST)
+        
+    def test_BlockType_PARAGRAPH(self):
+        block = "- This is the first list item in a list block\n This is not a list item\n- This is another list item"
+        block_type = block_to_block_type(block)
+        self.assertEqual(block_type, BlockType.PARAGRAPH)
