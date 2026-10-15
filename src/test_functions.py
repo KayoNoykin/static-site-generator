@@ -69,13 +69,35 @@ class TestSplitFuncs(unittest.TestCase):
             new_nodes,
         )
         
-    def test_split_links(self):
+    def test_split_links_error(self):
         node = TextNode(
             "This is text with a [link](https://www.boot.dev) and another [second link(https://www.youtube.com)",
             TextType.TEXT,
         )
         with self.assertRaises(Exception, msg="invalid markdown syntax"):
             split_nodes_link([node])
+
+    def test_split_images_with_link(self):
+        node = TextNode(
+            "This is text with a [link](https://www.boot.dev) and another [second link](https://www.youtube.com)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [node],
+            new_nodes,
+        )
+
+    def test_split_links_with_image(self):
+        node = TextNode(
+            "This is text with an ![image(https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            [node],
+            new_nodes,
+        )
 
 #extract_markdown_(images/links) tests (add more)        
 class TestExtractFuncs(unittest.TestCase):
