@@ -190,3 +190,30 @@ def extract_title(markdown: str) -> str:
         if line.startswith("# "):
             return line.strip("# ")
     raise Exception("no line with h1 header found")
+
+def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    if not os.path.isfile(from_path):
+        raise Exception(f'Error: File not found or is not a regular file: "{from_path}"')
+    if not os.path.isfile(template_path):
+        raise Exception(f'Error: File not found or is not a regular file: "{template_path}"')
+    dest_dir = os.path.dirname(dest_path)
+    if os.path.exists(dest_dir) == False:
+        os.makedirs(dest_dir, exist_ok=True)
+    with open(from_path, "r") as file:
+        markdown = file.read
+        print(f"markdown = {markdown}")
+    with open(template_path, "r") as file:
+        template = file.read
+    node = markdown_to_html_node(markdown)
+    title = extract_title(markdown)
+    html = node.to_html
+    page = template.replace("{{ Title }}", title).replace("{{ Content }}", html)
+    if os.path.isdir(dest_path):
+        return f'Error: Cannot write to "{dest_path}" as it is a directory'
+    try:
+        with open(dest_path, "w") as file:
+            file.write(page)
+        return f'Successfully wrote to "{dest_path}"'
+    except:
+        return f'Error: something went wrong when writing to "{dest_path}"'
