@@ -93,7 +93,7 @@ def block_to_block_type(block: str) -> BlockType:
             return BlockType.QUOTE
         elif all(line.startswith("- ") for line in lines):
             return BlockType.UNORDERED_LIST
-        elif all(lines[i - 1].startswith(f"{i}. ") for i in range(1, len(lines))):
+        elif all(lines[i - 1].startswith(f"{i}. ") for i in range(1, len(lines) + 1)):
             return BlockType.ORDERED_LIST
         else:
             return BlockType.PARAGRAPH
@@ -110,18 +110,35 @@ def block_to_html_node(block: str) -> ParentNode:
     match type:
         case BlockType.PARAGRAPH:
             tag = "p"
-            text = block #edit this to change "\n" -> " "?
+            text = block.replace("\n", " ")
             children = text_to_children(text)
         case BlockType.HEADING:
-            pass
+            for i in range(1,7):
+                if block.startswith(f"{'#' * i} "):
+                    tag = f"h{i}"
+            text = block.strip("# ")
+            children = text_to_children(text)
         case BlockType.QUOTE:
-            pass
+            lines = block.split("\n")
+            stripped = []
+            for line in lines:
+                stripped.append(line.lstrip(">"))
+            text = "\n".join(stripped)
+            children = text_to_children(text)
+            tag = "blockquote"
         case BlockType.UNORDERED_LIST:
-            pass
+            lines = block.split("\n")
+            stripped = []
+            for line in lines:
+                stripped.append(line.lstrip("-"))
+            
         case BlockType.ORDERED_LIST:
             pass
         case BlockType.CODE:
-            pass
+            text = block.strip("```\n")
+            text_node = TextNode(text, TextType.CODE)
+            children = text_node_to_html_node(text_node)
+            tag = "pre"
         case _:
             raise Exception("invalid block type")
     return ParentNode(tag, children)
