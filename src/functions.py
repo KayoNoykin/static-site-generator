@@ -122,7 +122,7 @@ def block_to_html_node(block: str) -> ParentNode:
             lines = block.split("\n")
             stripped = []
             for line in lines:
-                stripped.append(line.lstrip(">"))
+                stripped.append(line.lstrip("> "))
             text = "\n".join(stripped)
             children = text_to_children(text)
             tag = "blockquote"
@@ -132,7 +132,7 @@ def block_to_html_node(block: str) -> ParentNode:
             stripped = []
             children = []
             for line in lines:
-                stripped.append(line.lstrip("-"))
+                stripped.append(line.lstrip("- "))
             for line in stripped:
                 grandchildren = text_to_children(line)
                 child = ParentNode("li", grandchildren)
@@ -143,7 +143,7 @@ def block_to_html_node(block: str) -> ParentNode:
             stripped = []
             children = []
             for i in range(1, len(lines) + 1):
-                stripped.append(line[i - 1].lstrip(f"{i}. "))
+                stripped.append(lines[i - 1].lstrip(f"{i}. "))
             for line in stripped:
                 grandchildren = text_to_children(line)
                 child = ParentNode("li", grandchildren)

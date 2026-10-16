@@ -338,3 +338,59 @@ the **same** even with inline stuff
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+        
+    def test_heading(self):
+        md = """
+###### This is a heading
+This is text that should be _italic_, **bold** and `code` respectively.
+
+### This is a smaller heading
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><h6>This is a heading\nThis is text that should be <i>italic</i>, <b>bold</b> and <code>code</code> respectively.</h6><h3>This is a smaller heading</h3></div>",
+        )
+        
+    def test_unordered_list(self):
+        md = """
+- this is a **bold** list item
+- this is an _italic_ list item
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li>this is a <b>bold</b> list item</li><li>this is an <i>italic</i> list item</li></ul></div>",
+        )
+        
+    def test_ordered_list(self):
+        md = """
+1. this is the **first** list item
+2. this is the _second_ list item
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ol><li>this is the <b>first</b> list item</li><li>this is the <i>second</i> list item</li></ol></div>",
+        )
+        
+    def test_quote(self):
+        md = """
+>this is a **bold** quote
+> this is an _italic_ quote
+
+>this is a seperate blockquote
+"""
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><blockquote>this is a <b>bold</b> quote\nthis is an <i>italic</i> quote</blockquote><blockquote>this is a seperate blockquote</blockquote></div>",
+        )
