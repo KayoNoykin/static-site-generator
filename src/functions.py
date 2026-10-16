@@ -127,17 +127,31 @@ def block_to_html_node(block: str) -> ParentNode:
             children = text_to_children(text)
             tag = "blockquote"
         case BlockType.UNORDERED_LIST:
+            tag = "ul"
             lines = block.split("\n")
             stripped = []
+            children = []
             for line in lines:
                 stripped.append(line.lstrip("-"))
-            
+            for line in stripped:
+                grandchildren = text_to_children(line)
+                child = ParentNode("li", grandchildren)
+                children.append(child)
         case BlockType.ORDERED_LIST:
-            pass
+            tag = "ol"
+            lines = block.split("\n")
+            stripped = []
+            children = []
+            for i in range(1, len(lines) + 1):
+                stripped.append(line[i - 1].lstrip(f"{i}. "))
+            for line in stripped:
+                grandchildren = text_to_children(line)
+                child = ParentNode("li", grandchildren)
+                children.append(child)
         case BlockType.CODE:
             text = block.strip("```\n")
             text_node = TextNode(text, TextType.CODE)
-            children = text_node_to_html_node(text_node)
+            children = [text_node_to_html_node(text_node)]
             tag = "pre"
         case _:
             raise Exception("invalid block type")
@@ -148,6 +162,7 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
     blocks = markdown_to_blocks(markdown)
     block_nodes = []
     for block in blocks:
-        type = block_to_block_type(block)
-        
-        
+        node = block_to_html_node(block)
+        block_nodes.append(node)
+    div_node = ParentNode("div", block_nodes)
+    return div_node
