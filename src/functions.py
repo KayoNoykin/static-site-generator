@@ -1,6 +1,6 @@
 from textnode import TextNode, TextType, BlockType, text_node_to_html_node
 from htmlnode import HTMLNode, LeafNode, ParentNode
-import re
+import re, os, shutil
 
 def extract_markdown_images(text: str) -> list[tuple]:
     matches = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
@@ -166,3 +166,10 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
         block_nodes.append(node)
     div_node = ParentNode("div", block_nodes)
     return div_node
+
+def copy_directory(source: str, destination: str) -> None:
+    if os.path.exists(source) == False:
+        raise Exception("invalid source path")
+    if os.path.exists(destination):
+        shutil.rmtree(destination)
+    os.mkdir(destination)
