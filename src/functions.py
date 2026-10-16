@@ -53,11 +53,12 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
     for node in old_nodes:
         if node.text_type != TextType.TEXT:
             output.append(node)
-        elif " [" not in node.text:
+        elif "[" not in node.text:
             output.append(node)
         else:
             split = re.split(r"(?<!!)(\[.*?\))", node.text)
             if len(re.split(r"!\[|\[|\]|\(|\)", node.text)) % 2 == 0:
+                # print(len(re.split(r"!\[|\[|\]|\(|\)", node.text)))
                 raise Exception("invalid markdown syntax")
             args: list[tuple] = extract_markdown_links(node.text)
             for i in range(0, len(split)):
@@ -66,6 +67,7 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
                         output.append(TextNode(split[i], TextType.TEXT))
                 if i % 2 != 0:
                     output.append(TextNode(args[i // 2][0], TextType.LINK, args[i // 2][1]))
+    # print(output)
     return output
 
 def text_to_textnodes(text: str) -> list[TextNode]:
