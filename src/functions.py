@@ -183,3 +183,10 @@ def copy_directory(source: str, destination: str) -> None:
             new_dst = os.path.join(destination, item)
             # print(new_dst)
             copy_directory(path, new_dst)
+            
+def extract_title(markdown: str) -> str:
+    lines = markdown.split("\n")
+    for line in lines:
+        if line.startswith("# "):
+            return line.strip("# ")
+    raise Exception("no line with h1 header found")

@@ -394,3 +394,25 @@ This is text that should be _italic_, **bold** and `code` respectively.
             html,
             "<div><blockquote>this is a <b>bold</b> quote\nthis is an <i>italic</i> quote</blockquote><blockquote>this is a seperate blockquote</blockquote></div>",
         )
+        
+class TestExtractFuncs(unittest.TestCase):
+    def test_extract_title(self):
+        markdown = """
+### not this
+##### or this
+# this one
+## not this one
+#definitely not this one
+"""
+        result = extract_title(markdown)
+        self.assertEqual(result, "this one")
+        
+    def test_extract_title_error(self):
+        markdown = """
+### not this
+##### or this
+## not this one
+#definitely not this one
+"""
+        with self.assertRaises(Exception, msg="no line with h1 header found"):
+            extract_title(markdown)
