@@ -44,6 +44,20 @@ class TestSplitFuncs(unittest.TestCase):
             ],
             new_nodes,
         )
+
+    def test_split_images_no_extra_text(self):
+        node = TextNode(
+            "![JRR Tolkien sitting](/images/tolkien.png)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("JRR Tolkien sitting", TextType.IMAGE, "/images/tolkien.png"),
+            ],
+            new_nodes,
+        )
+
         
     def test_split_images_error(self):
         node = TextNode(

@@ -38,12 +38,14 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
             if len(re.split(r"!\[|\[|\]|\(|\)", node.text)) % 2 == 0:
                 raise Exception("invalid markdown syntax")
             args: list[tuple] = extract_markdown_images(node.text)
+            # print(f"args = {args}")
             for i in range(0, len(split)):
                 if i % 2 == 0:
                     if split[i] != "":
                         output.append(TextNode(split[i], TextType.TEXT))
                 if i % 2 != 0:
                     output.append(TextNode(args[i // 2][0], TextType.IMAGE, args[i // 2][1]))
+    # print(f"output = {output}")
     return output
 
 def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
@@ -103,6 +105,7 @@ def text_to_children(text: str) -> list[LeafNode]:
     leafnodes = []
     for node in textnodes:
         leafnodes.append(text_node_to_html_node(node))
+    # print(f"leafnodes = {leafnodes}")
     return leafnodes
     
 def block_to_html_node(block: str) -> ParentNode:
@@ -164,6 +167,7 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
     for block in blocks:
         node = block_to_html_node(block)
         block_nodes.append(node)
+    # print(block_nodes)
     div_node = ParentNode("div", block_nodes)
     return div_node
 
@@ -201,13 +205,13 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     if os.path.exists(dest_dir) == False:
         os.makedirs(dest_dir, exist_ok=True)
     with open(from_path, "r") as file:
-        markdown = file.read
-        print(f"markdown = {markdown}")
+        markdown = file.read()
+        # print(f"markdown = {markdown}")
     with open(template_path, "r") as file:
-        template = file.read
+        template = file.read()
     node = markdown_to_html_node(markdown)
     title = extract_title(markdown)
-    html = node.to_html
+    html = node.to_html()
     page = template.replace("{{ Title }}", title).replace("{{ Content }}", html)
     if os.path.isdir(dest_path):
         return f'Error: Cannot write to "{dest_path}" as it is a directory'
