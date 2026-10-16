@@ -1,7 +1,9 @@
 from textnode import TextNode, TextType
+from functions import copy_directory
+import os
 
 def main():
-    node = TextNode("lorem ipsum", "link", "http://www.boot.dev")
-    print(node)    
-    
+    copy_directory("./static", "./public") 
+
+
 main()

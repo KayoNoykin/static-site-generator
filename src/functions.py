@@ -173,3 +173,13 @@ def copy_directory(source: str, destination: str) -> None:
     if os.path.exists(destination):
         shutil.rmtree(destination)
     os.mkdir(destination)
+    dir_contents = os.listdir(source)
+    for item in dir_contents:
+        path = os.path.join(source, item)
+        if os.path.isfile(path):
+            # print(path)
+            shutil.copy(path, destination)
+        if os.path.isdir(path):
+            new_dst = os.path.join(destination, item)
+            # print(new_dst)
+            copy_directory(path, new_dst)
