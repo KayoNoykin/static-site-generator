@@ -149,7 +149,7 @@ def block_to_html_node(block: str) -> ParentNode:
                 child = ParentNode("li", grandchildren)
                 children.append(child)
         case BlockType.CODE:
-            text = block.strip("```\n")
+            text = block.lstrip("```\n").rstrip("```")
             text_node = TextNode(text, TextType.CODE)
             children = [text_node_to_html_node(text_node)]
             tag = "pre"
