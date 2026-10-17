@@ -1,10 +1,11 @@
 from textnode import TextNode, TextType
 from functions import copy_directory, generate_pages_recursive
-import os
+import sys
 
 def main():
-    copy_directory("./static", "./public") 
-    generate_pages_recursive("./content", "./template.html", "./public")
+    basepath = sys.argv
+    copy_directory("./static", "./docs") 
+    generate_pages_recursive("./content", "./template.html", "./docs", basepath)
 
 
 main()

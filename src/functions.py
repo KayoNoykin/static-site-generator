@@ -197,7 +197,7 @@ def extract_title(markdown: str) -> str:
             return line.strip("# ")
     raise Exception("no line with h1 header found")
 
-def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
+def generate_page(from_path: str, template_path: str, dest_path: str, basepath: list[str]) -> None:
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     if not os.path.isfile(from_path):
         raise Exception(f'Error: File not found or is not a regular file: "{from_path}"')
@@ -214,7 +214,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     node = markdown_to_html_node(markdown)
     title = extract_title(markdown)
     html = node.to_html()
-    page = template.replace("{{ Title }}", title).replace("{{ Content }}", html)
+    page = template.replace("{{ Title }}", title).replace("{{ Content }}", html).replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
     if os.path.isdir(dest_path):
         return f'Error: Cannot write to "{dest_path}" as it is a directory'
     try:
@@ -224,7 +224,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     except:
         return f'Error: something went wrong when writing to "{dest_path}"'
     
-def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str) -> None:
+def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str, basepath: list[str]) -> None:
     if os.path.exists(dir_path_content) == False:
         raise Exception("invalid source path")
     dir_contents = os.listdir(dir_path_content)
@@ -234,7 +234,7 @@ def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir
             if item.endswith(".md"):
                 dst_item = item.replace(".md", ".html")
                 new_dst = os.path.join(dest_dir_path, dst_item)
-                generate_page(path, template_path, new_dst)
+                generate_page(path, template_path, new_dst, basepath)
         if os.path.isdir(path):
             new_dst = os.path.join(dest_dir_path, item)
-            generate_pages_recursive(path, template_path, new_dst)
+            generate_pages_recursive(path, template_path, new_dst, basepath)
