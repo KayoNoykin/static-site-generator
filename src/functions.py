@@ -223,3 +223,18 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
         return f'Successfully wrote to "{dest_path}"'
     except:
         return f'Error: something went wrong when writing to "{dest_path}"'
+    
+def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str) -> None:
+    if os.path.exists(dir_path_content) == False:
+        raise Exception("invalid source path")
+    dir_contents = os.listdir(dir_path_content)
+    for item in dir_contents:
+        path = os.path.join(dir_path_content, item)
+        if os.path.isfile(path):
+            if item.endswith(".md"):
+                dst_item = item.replace(".md", ".html")
+                new_dst = os.path.join(dest_dir_path, dst_item)
+                generate_page(path, template_path, new_dst)
+        if os.path.isdir(path):
+            new_dst = os.path.join(dest_dir_path, item)
+            generate_pages_recursive(path, template_path, new_dst)
