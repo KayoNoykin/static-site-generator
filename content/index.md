@@ -1,46 +1,32 @@
-# Tolkien Fan Club
+# Deadlock Rocks!
 
-![JRR Tolkien sitting](/images/tolkien.png)
+![Deadlock's steam page spread](/images/deadlock.png)
 
-Here's the deal, **I like Tolkien**.
+Deadlock fucking **ROCKS**
+
+It's like a MOBA if it had _actual gameplay_
 
 > "I am in fact a Hobbit in all but size."
 >
 > -- J.R.R. Tolkien
 
-## Blog posts
+## Character Pages
 
-- [Why Glorfindel is More Impressive than Legolas](/blog/glorfindel)
-- [Why Tom Bombadil Was a Mistake](/blog/tom)
-- [The Unparalleled Majesty of "The Lord of the Rings"](/blog/majesty)
-
-## Reasons I like Tolkien
-
-- You can spend years studying the legendarium and still not understand its depths
-- It can be enjoyed by children and adults alike
-- Disney _didn't ruin it_ (okay, but Amazon might have)
-- It created an entirely new genre of fantasy
+- [Celeste](/gallery/celeste)
+- [Silver](/gallery/silver)
+- [Mina](/gallery/mina)
 
 ## My favorite characters (in order)
 
-1. Gandalf
-2. Bilbo
-3. Sam
-4. Glorfindel
-5. Galadriel
-6. Elrond
-7. Thorin
-8. Sauron
-9. Aragorn
+1. Celeste
+2. Violet
+3. Silver
+4. Mina
+5. Vyper
+6. Wraith
 
-Here's what `elflang` looks like (the perfect coding language):
+## Get Involved
 
-```
-func main(){
-    fmt.Println("Aiya, Ambar!")
-}
-```
-
-Want to get in touch? [Contact me here](/contact).
+Want to try it out yourself? find yourself an invite, and check out the [Steam page](https://store.steampowered.com/app/1422450/Deadlock/)
 
 This site was generated with a custom-built [static site generator](https://www.boot.dev/courses/build-static-site-generator-python) from the course on [Boot.dev](https://www.boot.dev).
