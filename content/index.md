@@ -4,11 +4,11 @@
 
 Deadlock fucking **ROCKS**
 
-It's like a MOBA if it had _actual gameplay_
+It's like a League of Legends if it had _actual gameplay_ and was _good_
 
-> "I am in fact a Hobbit in all but size."
+> "I was hoping that I could sit back and enjoy my day, but it looks like the Patrons are gonna need some adult supervision."
 >
-> -- J.R.R. Tolkien
+> -- Solomon
 
 ## Character Pages
 
